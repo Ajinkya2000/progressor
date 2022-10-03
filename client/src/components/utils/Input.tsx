@@ -18,7 +18,7 @@ const Input: React.FC<InputProps> = ({
 			<div className="mb-3 xl:w-96">
 				<label
 					htmlFor={id}
-					className="form-label inline-block mb-2 text-gray-700"
+					className="form-label inline-block mb-2 text-gray-700 text-sm"
 				>
 					{label}
 				</label>
@@ -34,6 +34,7 @@ const Input: React.FC<InputProps> = ({
             ease-in-out
             m-0
             focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none
+						text-sm
           "
 					id={id}
 					placeholder={placeholder}

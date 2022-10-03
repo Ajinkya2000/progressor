@@ -5,13 +5,14 @@ module.exports = {
 		extend: {
 			colors: {
 				grey: "#f3f5f9",
+				primary: "#5a18fb",
 			},
 			maxWidth: {
 				"7xl": "100rem",
 			},
 			maxHeight: {
-				"reduced": "60rem"
-			}
+				reduced: "60rem",
+			},
 		},
 	},
 	plugins: [],
