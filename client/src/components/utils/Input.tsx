@@ -1,21 +1,29 @@
-import { useId } from "react";
+import React, { ChangeEvent, useId } from "react";
 
 interface InputProps {
 	type: string;
 	label: string;
+	name: string;
 	placeholder: string;
+	value: string;
+	onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+	required?: boolean;
 }
 
 const Input: React.FC<InputProps> = ({
 	type = "text",
 	label = "Enter Value",
+	name = "",
 	placeholder = "",
+	value,
+	onChange,
+	required
 }) => {
 	const id = useId();
 
 	return (
 		<div className="flex">
-			<div className="mb-3 xl:w-96">
+			<div className="flex-1 mb-3">
 				<label
 					htmlFor={id}
 					className="form-label inline-block mb-2 text-gray-700 text-sm"
@@ -24,6 +32,7 @@ const Input: React.FC<InputProps> = ({
 				</label>
 				<input
 					type={type}
+					name={name}
 					className="
             w-full
             px-3
@@ -38,6 +47,9 @@ const Input: React.FC<InputProps> = ({
           "
 					id={id}
 					placeholder={placeholder}
+					value={value}
+					onChange={onChange}
+					required={required}
 				/>
 			</div>
 		</div>
