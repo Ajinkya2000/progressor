@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { Navigate } from "react-router-dom";
+import useStore from "../../store";
 
 import Signin from "./Signin";
 import Signup from "./Signup";
@@ -7,11 +9,17 @@ import logo from "../../images/logo.png";
 import brand from "../../images/brand.svg";
 
 const Auth = () => {
+	const isAuthenticated = useStore((state) => state.isAuthenticated);
+
 	const [showSigninScreen, setShowSigninScreen] = useState<boolean>(true);
 
 	const handleFormSwitch = () => {
 		setShowSigninScreen(!showSigninScreen);
 	};
+
+	if (isAuthenticated) {
+		return <Navigate to="/dashboard" replace={true} />;
+	}
 
 	return (
 		<div className="flex h-full max-h-fit relative">
@@ -25,9 +33,7 @@ const Auth = () => {
 						? "Don't have an account? "
 						: "Already have an account? "}
 					<button className="text-primary" onClick={handleFormSwitch}>
-					{showSigninScreen
-						? "Sign up"
-						: "Sign in"}
+						{showSigninScreen ? "Sign up" : "Sign in"}
 					</button>
 				</p>
 			</div>

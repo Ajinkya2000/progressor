@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-import { Input, Spinner } from "../utils/components";
+import { Input, Spinner } from "../utils";
 
 import progressor from "../../api/progressor";
-import { parseError } from "../utils/functions/parseError";
+import { parseError } from "../../commonUtils";
+import useStore from "../../store";
 
 const Signin = () => {
+	const authenticateUser = useStore((state) => state.authenticateUser);
 	const [authDetails, setAuthDetails] = useState({
 		email: "",
 		password: "",
@@ -27,10 +29,10 @@ const Signin = () => {
 
 		try {
 			const { data } = await progressor.post("user/signin/", authDetails);
-			const accessToken = data.access;
-			localStorage.setItem("user", accessToken);
+			localStorage.setItem("@tokens", JSON.stringify(data));
 
 			toast.success("Sign in successful!!", { theme: "colored" });
+			authenticateUser(data.refresh, data.access);
 			navigate("/dashboard", { replace: true });
 		} catch (err: any) {
 			const errorMessage = parseError(err.response.data);
