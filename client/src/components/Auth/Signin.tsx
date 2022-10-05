@@ -1,20 +1,43 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
-import { Input } from "../utils/components";
+import { Input, Spinner } from "../utils/components";
+
+import progressor from "../../api/progressor";
+import { parseError } from "../utils/functions/parseError";
 
 const Signin = () => {
 	const [authDetails, setAuthDetails] = useState({
 		email: "",
 		password: "",
 	});
+	const [showSpinner, setShowSpinner] = useState(false);
+
+	const navigate = useNavigate();
 
 	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setAuthDetails({ ...authDetails, [e.target.name]: e.target.value });
 	};
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		console.log(authDetails);
+
+		setShowSpinner(true);
+
+		try {
+			const { data } = await progressor.post("user/signin/", authDetails);
+			const accessToken = data.access;
+			localStorage.setItem("user", accessToken);
+
+			toast.success("Sign in successful!!", { theme: "colored" });
+			navigate("/dashboard", { replace: true });
+		} catch (err: any) {
+			const errorMessage = parseError(err.response.data);
+			toast.error(errorMessage);
+		} finally {
+			setShowSpinner(false);
+		}
 	};
 
 	return (
@@ -47,9 +70,10 @@ const Signin = () => {
 			</button>
 			<button
 				type="submit"
-				className="my-6 w-full inline-block px-6 py-2.5 bg-primary text-white text-sm rounded shadow-md"
+				className="flex justify-center items-center my-6 w-full inline-block px-6 py-2.5 bg-primary text-white text-sm rounded shadow-md"
 			>
 				Sign In
+				{!!showSpinner && <Spinner size="sm" />}
 			</button>
 		</form>
 	);

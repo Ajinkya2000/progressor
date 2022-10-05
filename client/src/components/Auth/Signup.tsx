@@ -13,7 +13,7 @@ const Signup = () => {
 		email: "",
 		password: "",
 	});
-	const [showSpinner, setShowSpinner] = useState(true);
+	const [showSpinner, setShowSpinner] = useState(false);
 
 	const navigate = useNavigate();
 
@@ -32,9 +32,9 @@ const Signup = () => {
 			localStorage.setItem("user", accessToken);
 
 			toast.success("Sign up successful!!", { theme: "colored" });
-			navigate('/dashboard', {replace: true});
+			navigate("/dashboard", { replace: true });
 		} catch (err: any) {
-			const errorMessage = parseError(err.response.data.errors);
+			const errorMessage = parseError(err.response.data);
 			toast.error(errorMessage);
 		} finally {
 			setShowSpinner(false);
