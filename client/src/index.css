@@ -5,3 +5,8 @@
 body {
 	background-color: #d3d0df;
 }
+
+/* Spinner */
+.spinner-border {
+	border-right-color: transparent;
+}

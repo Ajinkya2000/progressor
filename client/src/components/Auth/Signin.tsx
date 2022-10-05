@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import Input from "../utils/Input";
+import { Input } from "../utils/components";
 
 const Signin = () => {
 	const [authDetails, setAuthDetails] = useState({
@@ -12,8 +12,13 @@ const Signin = () => {
 		setAuthDetails({ ...authDetails, [e.target.name]: e.target.value });
 	};
 
+	const handleSubmit = (e: React.FormEvent) => {
+		e.preventDefault();
+		console.log(authDetails);
+	};
+
 	return (
-		<form className="flex flex-col">
+		<form className="flex flex-col" onSubmit={handleSubmit}>
 			<h2 className="text-3xl my-3">Welcome back!</h2>
 			<p className="text-slate-400 mb-6">Hello, who's this?</p>
 			<Input
