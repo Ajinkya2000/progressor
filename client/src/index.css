@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -9,4 +10,29 @@ body {
 /* Spinner */
 .spinner-border {
 	border-right-color: transparent;
+}
+
+/* Sidebar */
+aside nav.menu ul {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+aside .menu-anchor {
+	height: 35px;
+}
+
+.sidebar-menu-item.active {
+	color: #5a18fb;
+	border-right: 5px solid #5a18fb;
+}
+
+.sidebar-icon.active path {
+	fill: #5a18fb;
+}
+
+.sidebar-submenu .menu-anchor .expand-icon {
+	display: flex;
 }

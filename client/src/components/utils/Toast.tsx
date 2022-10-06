@@ -11,7 +11,7 @@ const Toast: React.FC = () => {
 			newestOnTop={false}
 			pauseOnFocusLoss
 			draggable
-			pauseOnHover
+			pauseOnHover={false}
 		/>
 	);
 };

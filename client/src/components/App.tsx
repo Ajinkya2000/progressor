@@ -24,6 +24,7 @@ const App = () => {
 
 	return (
 		<div className="max-w-7xl h-screen max-h-reduced">
+			<h1 className="absolute w-0 h-0 opacity-0 z-0">Progressor</h1>
 			<Routes>
 				<Route path="/" element={<Auth />} />
 				<Route path="/dashboard" element={<Dashboard />} />
