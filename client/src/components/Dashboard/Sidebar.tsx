@@ -47,7 +47,7 @@ const Sidebar = () => {
 								<img src={avatar} alt="avatar" className="w-24 h-24" />
 							</div>
 							<p className="font-medium mt-4">{user?.name}</p>
-							<p className="text-sm text-slate-400 italic">{user?.email}</p>
+							<p className="text-xs text-slate-400 italic">{user?.email}</p>
 						</div>
 					</div>
 					<div className="flex-1 text-sm mt-6">
