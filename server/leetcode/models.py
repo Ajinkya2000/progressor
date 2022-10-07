@@ -5,7 +5,7 @@ from users.models import User
 
 class LeetcodeInitialData(models.Model):
   """Model for storing the original leetcode data after the user has registered for the very first time"""
-  user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+  user = models.OneToOneField(User, on_delete=models.CASCADE)
   leetcode_username = models.CharField(
     max_length=64, verbose_name='Leetcode Username')
   total_questions = models.IntegerField(
@@ -29,7 +29,7 @@ class LeetcodeInitialData(models.Model):
 
 class LeetcodeUpdatedData(models.Model):
   """Model for daily updating the total_questions and other related fields"""
-  user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+  user = models.OneToOneField(User, on_delete=models.CASCADE)
   leetcode_username = models.CharField(
     max_length=64, verbose_name='Leetcode Username')
   total_questions = models.IntegerField(

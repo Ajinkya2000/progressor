@@ -1,3 +1,4 @@
+from email.policy import default
 from typing import List
 
 from django.db import models
@@ -41,6 +42,7 @@ class User(AbstractUser):
   username = None
   email = models.EmailField(unique=True)
   name = models.CharField(max_length=32)
+  is_leetcode_connected = models.BooleanField(default=False, verbose_name = 'Leetcode Connected?')
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
 

@@ -39,7 +39,8 @@ def get_initial_leetcode_data(request):
         initial_data_serializer.save()
         return Response(data={'leetcode_data': initial_data_serializer.data}, status=status.HTTP_201_CREATED)
     except Exception as e:
+      print(e)
       if initial_data_serializer.errors:
         return Response(data={'errors': initial_data_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-      return Response(data={'errors': internal_server_error_message()}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+      return Response(data={'errors': internal_server_error_message(str(e))}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
