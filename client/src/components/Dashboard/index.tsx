@@ -13,7 +13,6 @@ const Dashboard = () => {
 
 	useEffect(() => {
 		if (!isAuthenticated) return;
-
 		getUser(() => {
 			toast.error("Unable to load user data!! Please try again later.");
 		});
@@ -30,7 +29,7 @@ const Dashboard = () => {
 
 	return (
 		<>
-			{/* @ts-ignore library is incompatible with react18*/}
+			{/* @ts-ignore - library is incompatible with react18*/}
 			<ProSidebarProvider>
 				<div className="flex h-full font-montserrat">
 					<Sidebar />

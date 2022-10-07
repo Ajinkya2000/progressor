@@ -30,10 +30,11 @@ const Signup = () => {
 
 		try {
 			const { data } = await progressor.post("user/signup/", authDetails);
+			console.log(data);
 			localStorage.setItem("@tokens", JSON.stringify(data.tokens));
 
 			toast.success("Sign up successful!!", { theme: "colored" });
-			authenticateUser(data.refresh, data.access);
+			authenticateUser(data.tokens.refresh, data.tokens.access);
 			navigate("/dashboard", { replace: true });
 		} catch (err: any) {
 			const errorMessage = parseError(err.response.data);

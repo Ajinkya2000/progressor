@@ -1,7 +1,7 @@
 import { StateCreator } from "zustand";
 import progressor from "../api/progressor";
 
-import { AuthSlice } from "./types";
+import { AuthSlice, User } from "./types";
 
 const createAuthSlice: StateCreator<AuthSlice> = (set, getState) => ({
 	refresh: null,
@@ -49,6 +49,9 @@ const createAuthSlice: StateCreator<AuthSlice> = (set, getState) => ({
 				callback();
 			}
 		}
+	},
+	updateUser: (userData: User) => {
+		set((state) => ({ ...state, user: userData }));
 	},
 });
 

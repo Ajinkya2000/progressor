@@ -1,4 +1,3 @@
-from functools import partial
 from rest_framework import serializers
 
 from .models import LeetcodeInitialData, LeetcodeUpdatedData
@@ -12,6 +11,8 @@ class LeetcodeUpdatedDataSerializer(serializers.ModelSerializer):
 
 
 class LeetcodeInitialDataSerializer(serializers.ModelSerializer):
+  user = serializers.SerializerMethodField()
+
   class Meta:
     model = LeetcodeInitialData
     fields = '__all__'
@@ -23,10 +24,14 @@ class LeetcodeInitialDataSerializer(serializers.ModelSerializer):
     LeetcodeUpdatedData.objects.create(**validated_data)
 
     # Update field 'is_leetcode_connected' to True on user model
-    user = validated_data.pop('user')
+    user = validated_data.get('user_id')
     user_serializer = UserSerializer(
       user, data={'is_leetcode_connected': True}, partial=True)
     if user_serializer.is_valid(raise_exception=True):
       user_serializer.save()
 
     return leetcode_initial_data
+  
+  def get_user(self, instance):
+    user_serializer = UserSerializer(instance.user_id)
+    return user_serializer.data

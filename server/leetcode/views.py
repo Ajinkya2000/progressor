@@ -32,14 +32,13 @@ def get_initial_leetcode_data(request):
       return Response(data={'detail': error}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     initial_data_serializer = LeetcodeInitialDataSerializer(
-      data={'user': user.id, 'leetcode_username': leetcode_username, **initial_leetcode_data})
+      data={'user_id': user.id, 'leetcode_username': leetcode_username, **initial_leetcode_data})
 
     try:
       if initial_data_serializer.is_valid(raise_exception=True):
         initial_data_serializer.save()
-        return Response(data={'leetcode_data': initial_data_serializer.data}, status=status.HTTP_201_CREATED)
+        return Response(data=initial_data_serializer.data, status=status.HTTP_201_CREATED)
     except Exception as e:
-      print(e)
       if initial_data_serializer.errors:
         return Response(data={'errors': initial_data_serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 

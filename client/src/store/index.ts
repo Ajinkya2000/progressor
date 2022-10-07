@@ -1,7 +1,7 @@
 import create from "zustand";
 
-import createAuthSlice from "./Auth";
-import createDashboardTabsSlice from "./DashboardTabs";
+import createAuthSlice from "./auth";
+import createDashboardTabsSlice from "./dashboardTabs";
 import { AuthSlice, DashboardTabsSlice } from "./types";
 
 const useStore = create<AuthSlice & DashboardTabsSlice>()((...args) => ({
