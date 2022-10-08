@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
+import dj_database_url
+
 from pathlib import Path
 from decouple import config
 from datetime import timedelta
@@ -27,7 +29,8 @@ SECRET_KEY = config('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['progressor-web.herokuapp.com',
+                 '0.0.0.0', '127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -88,6 +91,9 @@ DATABASES = {
   }
 }
 
+# Update DB for Production
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
