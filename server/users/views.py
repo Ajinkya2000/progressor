@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .serializers import UserSerializer
-from .utils import get_tokens_for_user, internal_server_error_message
+from utils.common import get_tokens_for_user, internal_server_error_message
 
 
 @api_view(['GET'])

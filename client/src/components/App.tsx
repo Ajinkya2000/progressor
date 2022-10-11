@@ -19,16 +19,17 @@ const App = () => {
 		} else {
 			unauthenticateUser();
 		}
-
 	}, [authenticateUser, unauthenticateUser]);
 
 	return (
-		<div className="max-w-7xl h-screen max-h-reduced">
+		<div className="w-full max-w-7xl h-screen max-h-reduced flex bg-red-300">
 			<h1 className="absolute w-0 h-0 opacity-0 z-0">Progressor</h1>
-			<Routes>
-				<Route path="/" element={<Auth />} />
-				<Route path="/dashboard" element={<Dashboard />} />
-			</Routes>
+			<div className="flex-1">
+				<Routes>
+					<Route path="/" element={<Auth />} />
+					<Route path="/dashboard" element={<Dashboard />} />
+				</Routes>
+			</div>
 			<Toast />
 		</div>
 	);

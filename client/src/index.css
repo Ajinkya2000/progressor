@@ -7,6 +7,14 @@ body {
 	background-color: #d3d0df;
 }
 
+#root {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	width: 100vw;
+}
+
 /* Spinner */
 .spinner-border {
 	border-right-color: transparent;
