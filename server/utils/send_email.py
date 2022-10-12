@@ -1,3 +1,4 @@
+from urllib import response
 import pytz
 from datetime import datetime
 
@@ -9,17 +10,21 @@ sg = SendGridAPIClient(api_key=settings.SENDGRID_API_KEY)
 from_email = settings.SENDER_EMAIL
 
 
+def send_verification_email(to_email, verification_url):
+  subject = 'Verify your email address | Progressor'
+  text_content = f"""Hi,\n\nGreeting from Progressor!\n\nFollow the link to verify your account: {verification_url}\n\nRegards,\nAjinkya Deshpande"""
+
+  message = Mail(from_email, to_email, subject, text_content)
+  response = sg.send(message)
+  return response.status_code
+
+
 def send_email(to_email, subject, data):
   text_content = get_text_content(data)
   html_content = get_html_content(data)
-  try:
-    message = Mail(from_email, to_email, subject, text_content, html_content)
-    response = sg.send(message)
-    print(response.status_code)
-    print(response.body)
-    print(response.headers)
-  except Exception as e:
-    print(e)
+  message = Mail(from_email, to_email, subject, text_content, html_content)
+  response = sg.send(message)
+  return response.status_code
 
 
 def get_date():

@@ -6,9 +6,11 @@ import { ProSidebarProvider } from "react-pro-sidebar";
 import useStore from "../../store";
 import DashboardContent from "./DashboardContent";
 import Sidebar from "./Sidebar";
+import progressor from "../../api/progressor";
 
 const Dashboard = () => {
 	const isAuthenticated = useStore((state) => state.isAuthenticated);
+	const user = useStore((state) => state.user);
 	const getUser = useStore((state) => state.getUser);
 
 	useEffect(() => {
@@ -29,13 +31,19 @@ const Dashboard = () => {
 
 	return (
 		<>
-			{/* @ts-ignore - library is incompatible with react18*/}
-			<ProSidebarProvider>
-				<div className="flex h-full font-montserrat">
-					<Sidebar />
-					<DashboardContent />
-				</div>
-			</ProSidebarProvider>
+			{user?.is_verified && (
+				<>
+					{/* @ts-ignore - library is incompatible with react18*/}
+					<ProSidebarProvider>
+						<div className="flex h-full font-montserrat">
+							<Sidebar />
+							<DashboardContent />
+						</div>
+					</ProSidebarProvider>
+				</>
+			)}
+			{user?.is_verified === false && <div>Please Verify your email</div>}
+			{!user && <div>Loading</div>}
 		</>
 	);
 };

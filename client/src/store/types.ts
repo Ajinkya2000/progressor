@@ -6,6 +6,7 @@ export interface User {
 	name: string;
 	updated_at: string;
 	is_leetcode_connected: boolean;
+	is_verified: boolean;
 }
 
 export interface LeetcodeData {

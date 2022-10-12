@@ -11,7 +11,7 @@ class CustomUserAdmin(UserAdmin):
 
   fieldsets = (
     (None, {'fields': ('email', 'password')}),
-    (('Personal info'), {'fields': ('name', 'is_leetcode_connected')}),
+    (('Personal info'), {'fields': ('name', 'is_leetcode_connected', 'is_verified')}),
     (('Permissions'), {'fields': ('is_active',
      'is_staff', 'is_superuser', 'user_permissions')}),
     (('Important dates'), {'fields': ('last_login', 'created_at', 'updated_at')}),

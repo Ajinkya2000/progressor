@@ -43,6 +43,7 @@ class User(AbstractUser):
   email = models.EmailField(unique=True)
   name = models.CharField(max_length=32)
   is_leetcode_connected = models.BooleanField(default=False, verbose_name = 'Leetcode Connected?')
+  is_verified = models.BooleanField(default=False, verbose_name = 'Email Verified')
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
 
