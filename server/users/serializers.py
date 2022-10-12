@@ -16,5 +16,6 @@ class UserSerializer(serializers.ModelSerializer):
     instance.name = validated_data.get('name', instance.name)
     instance.is_leetcode_connected = validated_data.get(
       'is_leetcode_connected', instance.is_leetcode_connected)
-    instance.save()
+    instance.is_verified = validated_data.get(
+      'is_verified', instance.is_verified)
     return instance
