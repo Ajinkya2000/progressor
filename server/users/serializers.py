@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User
+from .models import User, Tokens
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -19,3 +19,9 @@ class UserSerializer(serializers.ModelSerializer):
     instance.is_verified = validated_data.get(
       'is_verified', instance.is_verified)
     return instance
+
+
+class TokenSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = Tokens
+    fields = '__all__'

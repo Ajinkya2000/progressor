@@ -1,6 +1,4 @@
-from email.policy import default
-from typing import List
-
+from tabnanny import verbose
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 
@@ -47,8 +45,8 @@ class User(AbstractUser):
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
 
-  USERNAME_FIELD: str = 'email'
-  REQUIRED_FIELDS: List[str] = ['name']
+  USERNAME_FIELD = 'email'
+  REQUIRED_FIELDS = ['name']
 
   objects = UserManager()
 
@@ -58,3 +56,15 @@ class User(AbstractUser):
 
   def __str__(self) -> str:
     return f'{self.name} ({self.email})'
+
+
+class Tokens(models.Model):
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
+  verify_email_token = models.CharField(max_length=512, verbose_name='Verify Email Token')
+
+  class Meta:
+    verbose_name = 'Tokens'
+    verbose_name_plural = 'Tokens'
+  
+  def __str__(self) -> str:
+    return f'{self.user.name}\'s Tokens'
