@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
 import { Input, Spinner } from "../utils";
 
 import progressor from "../../api/progressor";
 import { parseError } from "../../commonUtils";
 import useStore from "../../store";
 
-const Signin = () => {
+interface SigninProps {
+	children: React.ReactNode;
+}
+
+const Signin: React.FC<SigninProps> = ({ children }) => {
 	const authenticateUser = useStore((state) => state.authenticateUser);
 	const [authDetails, setAuthDetails] = useState({
 		email: "",
@@ -44,8 +47,7 @@ const Signin = () => {
 
 	return (
 		<form className="flex flex-col" onSubmit={handleSubmit}>
-			<h2 className="text-3xl my-3">Welcome back!</h2>
-			<p className="text-slate-400 mb-6">Hello, who's this?</p>
+			{children}
 			<Input
 				type="email"
 				label="Email"
