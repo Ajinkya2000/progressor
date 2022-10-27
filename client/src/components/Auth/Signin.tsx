@@ -68,13 +68,13 @@ const Signin: React.FC<SigninProps> = ({ children }) => {
 			/>
 			<button
 				type="button"
-				className="mt-3 self-end text-xs text-primary font-bold"
+				className="self-end text-xs text-primary font-bold"
 			>
 				Forgot password?
 			</button>
 			<button
 				type="submit"
-				className="flex justify-center items-center my-6 w-full inline-block px-6 py-2.5 bg-primary text-white text-sm rounded shadow-md"
+				className="flex justify-center my-2 items-center inline-block px-6 py-2.5 bg-primary text-white text-sm rounded shadow-md"
 			>
 				Sign In
 				{!!showSpinner && <Spinner size="sm" />}

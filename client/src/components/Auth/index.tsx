@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
-import axios from "axios";
 import useStore from "../../store";
+import progressor from "../../api/progressor";
 
-import { useGoogleLogin, GoogleLogin } from "@react-oauth/google";
+import { useGoogleLogin } from "@react-oauth/google";
 import Signin from "./Signin";
 import Signup from "./Signup";
 
 import logo from "../../images/logo.png";
 import brand from "../../images/brand.svg";
-import googleButton from "../../images/btn-google-dark-normal.png";
+import { ReactComponent as GoogleButton } from "../../images/btn-google-small.svg";
 
 const DJANGO_OAUTH_CLIENT_ID = process.env.REACT_APP_DJANGO_OAUTH_CLIENT_ID;
 const DJANGO_OAUTH_CLIENT_SECRET =
@@ -22,8 +22,8 @@ const Auth = () => {
 
 	const login = useGoogleLogin({
 		onSuccess: (response) => {
-			axios
-				.post(`http://localhost:8000/auth/convert-token`, {
+			progressor
+				.post(`auth/convert-token/`, {
 					token: response.access_token,
 					backend: "google-oauth2",
 					grant_type: "convert_token",
@@ -54,8 +54,12 @@ const Auth = () => {
 
 	const renderGoogleAuthButton = () => {
 		return (
-			<button onClick={() => login()} className="w-48">
-				<img src={googleButton} alt="Sign in with Google" />
+			<button
+				onClick={() => login()}
+				className="flex justify-center items-center w-72 text-sm mt-3 mb-6"
+			>
+				<GoogleButton width="40" height="40" />
+				<p>Continue with Google</p>
 			</button>
 		);
 	};
@@ -68,12 +72,12 @@ const Auth = () => {
 			<div className="flex-1 bg-white flex flex-col justify-center items-center">
 				{showSigninScreen ? (
 					<Signin>
-						<h2 className="text-3xl my-3">Welcome back!</h2>
+						<h2 className="text-3xl">Welcome back!</h2>
 						<p className="text-slate-400 mb-6">Hello, who's this?</p>
 					</Signin>
 				) : (
 					<Signup>
-						<h2 className="text-3xl my-3">Create an account</h2>
+						<h2 className="text-3xl">Create an account</h2>
 						<p className="text-slate-400 mb-6">Let's get started</p>
 					</Signup>
 				)}

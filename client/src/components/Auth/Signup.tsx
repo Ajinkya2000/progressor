@@ -49,7 +49,7 @@ const Signup: React.FC<SignupProps> = ({ children }) => {
 	};
 
 	return (
-		<form className="flex flex-col bg-grey px-10" onSubmit={handleSubmit}>
+		<form className="flex flex-col" onSubmit={handleSubmit}>
 			{children}
 			<Input
 				type="text"
@@ -80,7 +80,7 @@ const Signup: React.FC<SignupProps> = ({ children }) => {
 			/>
 			<button
 				type="submit"
-				className="flex justify-center items-center my-6 w-full inline-block px-6 py-2.5 bg-primary text-white text-sm rounded shadow-md"
+				className="flex justify-center items-center my-2 w-full inline-block px-6 py-2.5 bg-primary text-white text-sm rounded shadow-md"
 			>
 				Sign Up
 				{!!showSpinner && <Spinner size="sm" />}
