@@ -75,7 +75,7 @@ const Signin: React.FC<SigninProps> = ({ children }) => {
 				className="flex justify-center my-2 items-center inline-block px-6 py-2.5 bg-primary text-white text-sm rounded shadow-md"
 			>
 				Sign In
-				{!!showSpinner && <Spinner size="6" />}
+				{!!showSpinner && <Spinner size={6} />}
 			</button>
 		</form>
 	);

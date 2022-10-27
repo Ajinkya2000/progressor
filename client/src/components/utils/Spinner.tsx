@@ -1,8 +1,8 @@
 interface SpinnerProps {
-	size: string;
+	size: number;
 }
 
-const Spinner: React.FC<SpinnerProps> = ({ size }) => {
+const Spinner: React.FC<SpinnerProps> = ({ size = 6 }) => {
 	return (
 		<div className="flex justify-center items-center mx-2">
 			<div

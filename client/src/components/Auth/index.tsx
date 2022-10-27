@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useGoogleLogin } from "@react-oauth/google";
@@ -12,6 +12,7 @@ import Signup from "./Signup";
 import logo from "../../images/logo.png";
 import brand from "../../images/brand.svg";
 import { ReactComponent as GoogleButton } from "../../images/btn-google-small.svg";
+import { Spinner } from "../utils";
 
 const DJANGO_OAUTH_CLIENT_ID = process.env.REACT_APP_DJANGO_OAUTH_CLIENT_ID;
 const DJANGO_OAUTH_CLIENT_SECRET =
@@ -61,6 +62,12 @@ const Auth = () => {
 		setShowSigninScreen(!showSigninScreen);
 	};
 
+	useEffect(() => {
+		return () => {
+			setShowLoading(false);
+		};
+	}, []);
+
 	if (isAuthenticated) {
 		return <Navigate to="/dashboard" replace={true} />;
 	}
@@ -79,6 +86,11 @@ const Auth = () => {
 
 	return (
 		<div className="flex h-full max-h-fit relative">
+			{showLoading ? (
+				<div className="absolute w-full h-full bg-black/50 flex justify-center items-center">
+					<Spinner size={20} />
+				</div>
+			) : null}
 			<div className="absolute left-6 top-3">
 				<img className="w-48" src={brand} alt="brand" />
 			</div>
