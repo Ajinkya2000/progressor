@@ -14,7 +14,7 @@ import dj_database_url
 
 from pathlib import Path
 from decouple import config
-from datetime import timedelta
+from oauth2_provider import settings as oauth2_settings
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -46,6 +46,9 @@ INSTALLED_APPS = [
   'rest_framework',
   'users.apps.UsersConfig',
   'leetcode.apps.LeetcodeConfig',
+  'oauth2_provider',
+  'social_django',
+  'drf_social_oauth2',
 ]
 
 MIDDLEWARE = [
@@ -73,6 +76,8 @@ TEMPLATES = [
         'django.template.context_processors.request',
         'django.contrib.auth.context_processors.auth',
         'django.contrib.messages.context_processors.messages',
+        'social_django.context_processors.backends',
+        'social_django.context_processors.login_redirect',
       ],
     },
   },
@@ -115,10 +120,34 @@ AUTH_PASSWORD_VALIDATORS = [
 
 REST_FRAMEWORK = {
   'DEFAULT_AUTHENTICATION_CLASSES': (
-    'rest_framework_simplejwt.authentication.JWTAuthentication',
+    'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    'drf_social_oauth2.authentication.SocialAuthentication',
   )
 }
 
+AUTHENTICATION_BACKENDS = (
+    # Google OAuth2
+    'social_core.backends.google.GoogleOAuth2',
+
+    # drf-social-oauth2
+    'drf_social_oauth2.backends.DjangoOAuth2',
+
+    # Django
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+# Google configuration
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config('GOOGLE_OAUTH_CLIENT_ID')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config('GOOGLE_OAUTH_CLIENT_SECRET')
+
+# Define SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE to get extra permissions from Google.
+SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
+    'https://www.googleapis.com/auth/userinfo.email',
+    'https://www.googleapis.com/auth/userinfo.profile',
+]
+
+ACTIVATE_JWT = True
+oauth2_settings.DEFAULTS['ACCESS_TOKEN_EXPIRE_SECONDS'] = int(2.628e6) #1 month
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
@@ -147,38 +176,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.User'
 
 CORS_ALLOW_ALL_ORIGINS = True
-
-SIMPLE_JWT = {
-  'ACCESS_TOKEN_LIFETIME': timedelta(days=7),
-  'REFRESH_TOKEN_LIFETIME': timedelta(days=30),
-  'ROTATE_REFRESH_TOKENS': False,
-  'BLACKLIST_AFTER_ROTATION': False,
-  'UPDATE_LAST_LOGIN': False,
-
-  'ALGORITHM': 'HS256',
-  'SIGNING_KEY': config('JWT_KEY'),
-  'VERIFYING_KEY': None,
-  'AUDIENCE': None,
-  'ISSUER': None,
-  'JWK_URL': None,
-  'LEEWAY': 0,
-
-  'AUTH_HEADER_TYPES': ('Bearer',),
-  'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
-  'USER_ID_FIELD': 'id',
-  'USER_ID_CLAIM': 'user_id',
-  'USER_AUTHENTICATION_RULE': 'rest_framework_simplejwt.authentication.default_user_authentication_rule',
-
-  'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
-  'TOKEN_TYPE_CLAIM': 'token_type',
-  'TOKEN_USER_CLASS': 'rest_framework_simplejwt.models.TokenUser',
-
-  'JTI_CLAIM': 'jti',
-
-  'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
-  'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
-  'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
-}
 
 SENDER_EMAIL = config('SENDER_EMAIL')
 SENDGRID_API_KEY = config('SENDGRID_API_KEY')

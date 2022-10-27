@@ -8,7 +8,11 @@ import progressor from "../../api/progressor";
 import { parseError } from "../../commonUtils";
 import useStore from "../../store";
 
-const Signup = () => {
+interface SignupProps {
+	children: React.ReactNode;
+}
+
+const Signup: React.FC<SignupProps> = ({ children }) => {
 	const authenticateUser = useStore((state) => state.authenticateUser);
 	const [authDetails, setAuthDetails] = useState({
 		name: "",
@@ -46,8 +50,7 @@ const Signup = () => {
 
 	return (
 		<form className="flex flex-col" onSubmit={handleSubmit}>
-			<h2 className="text-3xl my-3">Create an account</h2>
-			<p className="text-slate-400 mb-6">Let's get started</p>
+			{children}
 			<Input
 				type="text"
 				label="Name"
@@ -77,7 +80,7 @@ const Signup = () => {
 			/>
 			<button
 				type="submit"
-				className="flex justify-center items-center my-6 w-full inline-block px-6 py-2.5 bg-primary text-white text-sm rounded shadow-md"
+				className="flex justify-center items-center my-2 w-full inline-block px-6 py-2.5 bg-primary text-white text-sm rounded shadow-md"
 			>
 				Sign Up
 				{!!showSpinner && <Spinner size="sm" />}

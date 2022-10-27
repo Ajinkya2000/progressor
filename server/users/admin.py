@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import Group
 
 from .models import User, Tokens
 
@@ -11,10 +12,13 @@ class CustomUserAdmin(UserAdmin):
 
   fieldsets = (
     (None, {'fields': ('email', 'password')}),
-    (('Personal info'), {'fields': ('name', 'is_leetcode_connected', 'is_verified')}),
+    (('Personal info'), {'fields': (
+      'name', 'is_leetcode_connected', 'is_verified',)}),
+    (('Personal info (Google)'), {'fields': ('first_name', 'last_name',)}),
     (('Permissions'), {'fields': ('is_active',
      'is_staff', 'is_superuser', 'user_permissions')}),
-    (('Important dates'), {'fields': ('last_login', 'created_at', 'updated_at')}),
+    (('Important dates'), {'fields': (
+      'last_login', 'created_at', 'updated_at')}),
   )
   add_fieldsets = (
     (None, {
@@ -29,3 +33,4 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(Tokens)
+admin.site.unregister(Group)

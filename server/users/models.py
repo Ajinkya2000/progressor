@@ -35,7 +35,7 @@ class UserManager(BaseUserManager):
 
     return self._create_user(email, password, **extra_fields)
 
-
+# TODO: Add is_google_user field to model
 class User(AbstractUser):
   username = None
   email = models.EmailField(unique=True)

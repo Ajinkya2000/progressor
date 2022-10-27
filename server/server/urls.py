@@ -20,4 +20,5 @@ urlpatterns = [
   path('admin/', admin.site.urls),
   path('api/', include('users.urls')),
   path('api/', include('leetcode.urls')),
+  path('api/auth/', include('drf_social_oauth2.urls', namespace='drf'))
 ]
