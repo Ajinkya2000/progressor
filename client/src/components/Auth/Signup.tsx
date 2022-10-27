@@ -83,7 +83,7 @@ const Signup: React.FC<SignupProps> = ({ children }) => {
 				className="flex justify-center items-center my-2 w-full inline-block px-6 py-2.5 bg-primary text-white text-sm rounded shadow-md"
 			>
 				Sign Up
-				{!!showSpinner && <Spinner size="sm" />}
+				{!!showSpinner && <Spinner size="6" />}
 			</button>
 		</form>
 	);

@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useGoogleLogin } from "@react-oauth/google";
+
 import useStore from "../../store";
 import progressor from "../../api/progressor";
-
-import { useGoogleLogin } from "@react-oauth/google";
+import { parseError } from "../../commonUtils";
 import Signin from "./Signin";
 import Signup from "./Signup";
 
@@ -17,30 +19,41 @@ const DJANGO_OAUTH_CLIENT_SECRET =
 
 const Auth = () => {
 	const isAuthenticated = useStore((state) => state.isAuthenticated);
+	const authenticateUser = useStore((state) => state.authenticateUser);
 
 	const [showSigninScreen, setShowSigninScreen] = useState<boolean>(true);
+	const [showLoading, setShowLoading] = useState<boolean>(false);
+
+	const navigate = useNavigate();
 
 	const login = useGoogleLogin({
-		onSuccess: (response) => {
-			progressor
-				.post(`auth/convert-token/`, {
+		onSuccess: async (response) => {
+			setShowLoading(true);
+
+			try {
+				const res = await progressor.post(`auth/convert-token/`, {
 					token: response.access_token,
 					backend: "google-oauth2",
 					grant_type: "convert_token",
 					client_id: DJANGO_OAUTH_CLIENT_ID,
 					client_secret: DJANGO_OAUTH_CLIENT_SECRET,
-				})
-				.then((res) => {
-					const { access_token, refresh_token } = res.data;
-					const tokens = JSON.stringify({
-						access: access_token,
-						refresh: refresh_token,
-					});
-					localStorage.setItem("@tokens", tokens);
-				})
-				.catch((err) => {
-					console.log("Error Google login", err);
 				});
+
+				const { access_token: access, refresh_token: refresh } = res.data;
+				const tokens = JSON.stringify({ access, refresh });
+
+				localStorage.setItem("@tokens", tokens);
+
+				toast.success("Sign in successful!!", { theme: "colored" });
+				authenticateUser(refresh, access);
+				setShowLoading(false);
+				navigate("/dashboard", { replace: true });
+			} catch (err: any) {
+				const errorMessage = parseError(err.response.data);
+				toast.error(errorMessage);
+			} finally {
+				setShowLoading(false);
+			}
 		},
 	});
 

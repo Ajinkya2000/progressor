@@ -36,6 +36,7 @@ const Signin: React.FC<SigninProps> = ({ children }) => {
 
 			toast.success("Sign in successful!!", { theme: "colored" });
 			authenticateUser(data.refresh, data.access);
+			setShowSpinner(false);
 			navigate("/dashboard", { replace: true });
 		} catch (err: any) {
 			const errorMessage = parseError(err.response.data);
@@ -66,10 +67,7 @@ const Signin: React.FC<SigninProps> = ({ children }) => {
 				onChange={handleChange}
 				required={true}
 			/>
-			<button
-				type="button"
-				className="self-end text-xs text-primary font-bold"
-			>
+			<button type="button" className="self-end text-xs text-primary font-bold">
 				Forgot password?
 			</button>
 			<button
@@ -77,7 +75,7 @@ const Signin: React.FC<SigninProps> = ({ children }) => {
 				className="flex justify-center my-2 items-center inline-block px-6 py-2.5 bg-primary text-white text-sm rounded shadow-md"
 			>
 				Sign In
-				{!!showSpinner && <Spinner size="sm" />}
+				{!!showSpinner && <Spinner size="6" />}
 			</button>
 		</form>
 	);
