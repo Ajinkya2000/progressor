@@ -43,7 +43,7 @@ def get_initial_leetcode_data(request):
         initial_data_serializer.save()
         # TODO Add Celery
         send_email(to_email=user.email,
-                   subject=f'Hey {user.name}! Congratulations on connecting your Leetcode account.', 
+                   subject=f'Hey {user.name}! Congratulations on connecting your Leetcode account | Progressor', 
                    data=initial_data_serializer.data)
 
         return Response(data=initial_data_serializer.data, status=status.HTTP_201_CREATED)

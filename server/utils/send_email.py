@@ -1,4 +1,3 @@
-from urllib import response
 import pytz
 from datetime import datetime
 
