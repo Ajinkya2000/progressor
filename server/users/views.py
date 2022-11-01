@@ -1,19 +1,20 @@
-from cmath import log
 import requests
 from decouple import config
 
 from rest_framework import status
-from rest_framework.decorators import api_view, permission_classes, authentication_classes
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from .models import Tokens
 from .serializers import UserSerializer, TokenSerializer
 from utils.common import internal_server_error_message, get_token_for_user, get_user_id_from_token
-from utils.send_email import send_verification_email
+# from utils.send_email import send_verification_email
+from .tasks import send_async_email
 
 # Remove below line
 from .models import User
+
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -33,10 +34,10 @@ def create_user(request):
         new_user = serializer.save()
         login_url = f"{config('DJANGO_SERVER_URI')}/auth/token/"
         r = requests.post(login_url, data={
-          'username': new_user.email, 
-          'password': request.data.get('password'), 
-          'client_id': config('DJANGO_OAUTH_CLIENT_ID'), 
-          'client_secret': config('DJANGO_OAUTH_CLIENT_SECRET'), 
+          'username': new_user.email,
+          'password': request.data.get('password'),
+          'client_id': config('DJANGO_OAUTH_CLIENT_ID'),
+          'client_secret': config('DJANGO_OAUTH_CLIENT_SECRET'),
           'grant_type': 'password'
         }).json()
 
@@ -69,6 +70,7 @@ def login_user(request):
             'refresh': r.get('refresh_token')}
     return Response(data=data, status=status.HTTP_201_CREATED)
 
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def verify_user_email(request):
@@ -79,15 +81,19 @@ def verify_user_email(request):
 
     # Create Token with user id
     token = get_token_for_user(user_serializer.data.get('id'))
-    token_serializer = TokenSerializer(data={'user': user.id, 'verify_email_token': token})
+    token_serializer = TokenSerializer(
+      data={'user': user.id, 'verify_email_token': token})
 
     try:
       if token_serializer.is_valid(raise_exception=True):
         token_serializer.save()
 
         verification_url = f'{client_url}/verify?token={token}'
-        send_verification_email(
-          to_email=user.email, verification_url=verification_url)
+        send_async_email.delay(
+          recipient_email=user.email,
+          type_of_email='verification',
+          verification_url=verification_url
+        )
 
         return Response(data={'message': 'Email sent successfully!'}, status=status.HTTP_200_OK)
     except Exception as e:
@@ -106,5 +112,6 @@ def verify_user_token(request):
       return Response(data={'detail': 'Token (from email) is required'}, status=status.HTTP_400_BAD_REQUEST)
 
     user_id = get_user_id_from_token(email_token)
-    Tokens.objects.filter(user=user_id, verify_email_token=email_token).exists()
+    Tokens.objects.filter(
+      user=user_id, verify_email_token=email_token).exists()
     # TODO: Complete this method

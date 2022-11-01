@@ -11,7 +11,7 @@ from_email = settings.SENDER_EMAIL
 
 def send_verification_email(to_email, verification_url):
   subject = 'Verify your email address | Progressor'
-  text_content = f"""Hi,\n\nGreeting from Progressor!\n\nFollow the link to verify your account: {verification_url}\n\nRegards,\nAjinkya Deshpande"""
+  text_content = f"Hi,\n\nGreeting from Progressor!\n\nFollow the link to verify your account: {verification_url}\n\nRegards,\nAjinkya Deshpande"
 
   message = Mail(from_email, to_email, subject, text_content)
   response = sg.send(message)
