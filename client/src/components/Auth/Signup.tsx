@@ -18,6 +18,7 @@ const Signup: React.FC<SignupProps> = ({ children }) => {
 		name: "",
 		email: "",
 		password: "",
+		is_google_user: false,
 	});
 	const [showSpinner, setShowSpinner] = useState(false);
 

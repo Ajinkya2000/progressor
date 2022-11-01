@@ -13,7 +13,7 @@ class CustomUserAdmin(UserAdmin):
   fieldsets = (
     (None, {'fields': ('email', 'password')}),
     (('Personal info'), {'fields': (
-      'name', 'is_leetcode_connected', 'is_verified',)}),
+      'name', 'is_leetcode_connected', 'is_verified', 'is_google_user')}),
     (('Personal info (Google)'), {'fields': ('first_name', 'last_name',)}),
     (('Permissions'), {'fields': ('is_active',
      'is_staff', 'is_superuser', 'user_permissions')}),
