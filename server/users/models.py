@@ -1,4 +1,3 @@
-from tabnanny import verbose
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 
@@ -35,13 +34,13 @@ class UserManager(BaseUserManager):
 
     return self._create_user(email, password, **extra_fields)
 
-# TODO: Add is_google_user field to model
 class User(AbstractUser):
   username = None
   email = models.EmailField(unique=True)
   name = models.CharField(max_length=32)
   is_leetcode_connected = models.BooleanField(default=False, verbose_name = 'Leetcode Connected?')
   is_verified = models.BooleanField(default=False, verbose_name = 'Email Verified')
+  is_google_user = models.BooleanField(default=True, verbose_name = 'Google User')
   created_at = models.DateTimeField(auto_now_add=True)
   updated_at = models.DateTimeField(auto_now=True)
 

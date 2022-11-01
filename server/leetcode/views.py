@@ -1,4 +1,3 @@
-from django.forms.models import model_to_dict
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -41,7 +40,6 @@ def get_initial_leetcode_data(request):
     try:
       if initial_data_serializer.is_valid(raise_exception=True):
         initial_data_serializer.save()
-        # TODO Add Celery
         send_email(to_email=user.email,
                    subject=f'Hey {user.name}! Congratulations on connecting your Leetcode account | Progressor', 
                    data=initial_data_serializer.data)
