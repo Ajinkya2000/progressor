@@ -6,6 +6,7 @@ import { ProSidebarProvider } from "react-pro-sidebar";
 import useStore from "../../store";
 import DashboardContent from "./DashboardContent";
 import Sidebar from "./Sidebar";
+import VerifyEmail from "./VerifyEmail";
 import progressor from "../../api/progressor";
 
 const Dashboard = () => {
@@ -42,7 +43,7 @@ const Dashboard = () => {
 					</ProSidebarProvider>
 				</>
 			)}
-			{user?.is_verified === false && <div>Please Verify your email</div>}
+			{user?.is_verified === false && <VerifyEmail />}
 			{!user && <div>Loading</div>}
 		</>
 	);
