@@ -3,6 +3,8 @@ Things to do in Progressor for MVP:
 1. Add 24 hours validity to the email verification token.
 2. Add a management command to update leetcode data and add heroku scheduler.
 3. Responsiveness
-4. Only send emails to active accounts
-5. Only add one token per user
+4. Only send emails to active accounts.
+5. Only add one token per user for email verification.
 6. Delete email token from database after email verification.
+7. Refactor tasks.py in both user and leetcode app
+8. Error handling for management command

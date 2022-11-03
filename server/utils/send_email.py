@@ -33,7 +33,7 @@ def get_date():
 
 
 def get_text_content(data):
-  return "Leetcode Initial Data"
+  return f"""Leetcode User Data\n\n{data['user']['name']} - {get_date()}\n\nTotal Questions - {data['total_questions']}\nEasy - {data['easy_questions']}\nMedium - {data['medium_questions']}\nHard - {data['hard_questions']}\n"""
 
 
 def get_html_content(data):
@@ -123,7 +123,123 @@ def get_html_content(data):
                       <div style="margin:25px 0">
                         <a style="
                             text-decoration:none;
-                            color:#000;
+                            color:#fff;
+                            padding:15px;
+                            background-color:#5a18fb;
+                            border-radius:50px;
+                          " href="https://progressor.vercel.app/">Go to Website</a>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </center>
+    </body>
+  </html>
+  """
+
+def send_email_db_update(to_email, subject, data, diff):
+  text_content = get_text_content_db_update(data, diff)
+  html_content = get_html_content_db_update(data, diff)
+  message = Mail(from_email, to_email, subject, text_content, html_content)
+  response = sg.send(message)
+  return response.status_code
+
+
+def get_text_content_db_update(data, diff):
+  return f"""Leetcode User Data\n\n{data['user_id']['name']} - {get_date()}\n\nTotal Questions - {data['total_questions']} (+{diff['total_questions']})\nEasy - {data['easy_questions']} (+{diff['easy_questions']})\nMedium - {data['medium_questions']} (+{diff['medium_questions']})\nHard - {data['hard_questions']} (+{diff['hard_questions']})\n"""
+
+def get_html_content_db_update(data, diff):
+  return f"""
+  <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+  <html>
+    <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+    </head>
+    <body style="background-color:#f6f9fc;margin:0;padding:0;font-family:sans-serif;">
+      <center class="main-wrapper" style="width:100%;table-layout:fixed;background-color:#f6f9fc;margin-top:40px;">
+        <div class="webkit" style="max-width:600px;background-color:#ffffff;">
+          <table class="outer" align="center" style="margin:0 auto;width:100%;max-width:600px;">
+            <tr>
+              <td>
+                <table width="100%" style="margin-top:40px">
+                  <tr>
+                    <td style="width: 40%; text-align: right;">
+                      <img src="https://i.postimg.cc/Y2WQLFmz/logo.png" alt="logo" width="80" style="margin-right: 20px;">
+                    </td>
+                    <td style="text-align:left">
+                      <h1>Progressor</h1>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <table width="100%" style="margin-top:20px; color:#00a3ff">
+                  <tr>
+                    <td style="text-align: center">
+                      <h2 style="margin:0">{data['user_id']['name']}</h2>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="text-align:center">
+                      <h2 style="margin:0">({get_date()})</h2>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <table width="100%" style="margin-top:30px">
+                  <tr>
+                    <td>
+                      <h2 style="padding-left:30px; margin:0">Leetcode User Data</h2>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="padding:0 30px">
+                      <table width="100%" style="margin:20px auto; border-collapse: collapse">
+                        <tr style="background-color:#000; color:#fff">
+                          <td style="width:50%; text-align:center; padding:20px">
+                            Total Questions
+                          </td>
+                          <td style="text-align:center">{data['total_questions']} (+{diff['total_questions']})</td>
+                        </tr>
+                        <tr style="background-color:#eeeeee">
+                          <td style="width:50%; text-align:center; padding:15px">
+                            Easy
+                          </td>
+                          <td style="text-align:center">{data['easy_questions']} (+{diff['easy_questions']})</td>
+                        </tr>
+                        <tr>
+                          <td style="width:50%; text-align:center; padding:15px">
+                            Medium
+                          </td>
+                          <td style="text-align:center">{data['medium_questions']} (+{diff['medium_questions']})</td>
+                        </tr>
+                        <tr style="background-color:#eeeeee">
+                          <td style="width:50%; text-align:center; padding:15px">
+                            Hard
+                          </td>
+                          <td style="text-align:center">{data['hard_questions']} (+{diff['hard_questions']})</td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="text-align:center">
+                      <div style="margin:25px 0">
+                        <a style="
+                            text-decoration:none;
+                            color:#fff;
                             padding:15px;
                             background-color:#5a18fb;
                             border-radius:50px;

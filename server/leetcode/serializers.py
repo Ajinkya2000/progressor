@@ -8,6 +8,7 @@ class LeetcodeUpdatedDataSerializer(serializers.ModelSerializer):
   class Meta:
     model = LeetcodeUpdatedData
     fields = '__all__'
+    depth = 1
 
 
 class LeetcodeInitialDataSerializer(serializers.ModelSerializer):

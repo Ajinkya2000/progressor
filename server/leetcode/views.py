@@ -9,6 +9,7 @@ from .serializers import LeetcodeInitialDataSerializer
 from .models import LeetcodeInitialData
 from utils.common import internal_server_error_message
 from utils.send_email import send_email
+from .tasks import send_async_email
 
 
 @api_view(['POST'])
@@ -40,9 +41,12 @@ def get_initial_leetcode_data(request):
     try:
       if initial_data_serializer.is_valid(raise_exception=True):
         initial_data_serializer.save()
-        send_email(to_email=user.email,
-                   subject=f'Hey {user.name}! Congratulations on connecting your Leetcode account | Progressor', 
-                   data=initial_data_serializer.data)
+        send_async_email.delay(
+          recipient_email=user.email,
+          type_of_email='general',
+          subject='Progressor - Your leetcode account is successfully connected.',
+          data=initial_data_serializer.data
+        )
 
         return Response(data=initial_data_serializer.data, status=status.HTTP_201_CREATED)
     except Exception as e:
