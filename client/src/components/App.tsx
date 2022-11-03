@@ -6,6 +6,7 @@ import useStore from "../store";
 
 import Auth from "./Auth";
 import Dashboard from "./Dashboard";
+import VerifyEmail from "./utils/VerifyEmail";
 import { Toast } from "./utils";
 
 const GOOGLE_OAUTH_CLIENT_ID =
@@ -34,6 +35,7 @@ const App = () => {
 					<Routes>
 						<Route path="/" element={<Auth />} />
 						<Route path="/dashboard" element={<Dashboard />} />
+						<Route path="/verify/:token" element={<VerifyEmail />} />
 					</Routes>
 				</GoogleOAuthProvider>
 			</div>

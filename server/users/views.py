@@ -6,14 +6,10 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from .models import Tokens
+from .models import Tokens, User
 from .serializers import UserSerializer, TokenSerializer
 from utils.common import internal_server_error_message, get_token_for_user, get_user_id_from_token
-# from utils.send_email import send_verification_email
 from .tasks import send_async_email
-
-# Remove below line
-from .models import User
 
 
 @api_view(['GET'])
@@ -88,7 +84,7 @@ def verify_user_email(request):
       if token_serializer.is_valid(raise_exception=True):
         token_serializer.save()
 
-        verification_url = f'{client_url}/verify?token={token}'
+        verification_url = f'{client_url}/verify/{token}'
         send_async_email.delay(
           recipient_email=user.email,
           type_of_email='verification',
@@ -109,9 +105,21 @@ def verify_user_token(request):
     email_token = request.data.get('email_token', None)
 
     if not email_token:
-      return Response(data={'detail': 'Token (from email) is required'}, status=status.HTTP_400_BAD_REQUEST)
+      return Response(data={'detail': 'Token (from email) is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
-    user_id = get_user_id_from_token(email_token)
-    Tokens.objects.filter(
-      user=user_id, verify_email_token=email_token).exists()
-    # TODO: Complete this method
+    try:
+      user_id = get_user_id_from_token(email_token)
+      token_exists_for_user = Tokens.objects.filter(
+        user=user_id, verify_email_token=email_token).exists()
+
+      if not token_exists_for_user:
+        return Response(data={'detail': 'Invalid Token!'}, status=status.HTTP_401_UNAUTHORIZED)
+
+      user_serializer = UserSerializer(instance=User.objects.get(
+        id=user_id), data={'is_verified': True}, partial=True)
+      
+      if user_serializer.is_valid(raise_exception=True):
+        user_serializer.save()
+        return Response(data={'user': user_serializer.validated_data}, status=status.HTTP_200_OK)
+    except Exception as e:
+      return Response(data={'errors': internal_server_error_message(str(e))}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
