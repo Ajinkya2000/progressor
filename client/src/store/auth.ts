@@ -30,6 +30,7 @@ const createAuthSlice: StateCreator<AuthSlice> = (set, getState) => ({
 		}));
 
 		localStorage.removeItem("@tokens");
+		localStorage.removeItem("@verificationMailSent")
 		callback();
 	},
 	getUser: async (callback) => {

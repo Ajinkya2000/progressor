@@ -1,23 +1,29 @@
 import { useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ProSidebarProvider } from "react-pro-sidebar";
+import Lottie from "lottie-react";
 
 import useStore from "../../store";
 import DashboardContent from "./DashboardContent";
 import Sidebar from "./Sidebar";
 import DashboardVerifyEmail from "./DashboardVerifyEmail";
-import progressor from "../../api/progressor";
+
+import loading4 from "../../assets/loading-4-lottie.json";
 
 const Dashboard = () => {
 	const isAuthenticated = useStore((state) => state.isAuthenticated);
 	const user = useStore((state) => state.user);
 	const getUser = useStore((state) => state.getUser);
+	const logoutUser = useStore((state) => state.logoutUser);
+
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		if (!isAuthenticated) return;
 		getUser(() => {
-			toast.error("Unable to load user data!! Please try again later.");
+			toast.error("Please login to continue!");
+			logoutUser(() => navigate("/"));
 		});
 	}, [isAuthenticated, getUser]);
 
@@ -44,7 +50,11 @@ const Dashboard = () => {
 				</>
 			)}
 			{user?.is_verified === false && <DashboardVerifyEmail />}
-			{!user && <div>Loading</div>}
+			{!user && (
+				<div className="flex justify-center items-center h-full">
+					<Lottie className="w-36" animationData={loading4} loop={true} />
+				</div>
+			)}
 		</>
 	);
 };
