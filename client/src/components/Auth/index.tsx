@@ -116,7 +116,7 @@ const Auth = () => {
 					</button>
 				</p>
 			</div>
-			<div className="flex-1 bg-grey flex justify-center items-center">
+			<div className="flex-1 bg-grey justify-center items-center hidden md:flex">
 				<img className="w-96" src={logo} alt="Logo" />
 			</div>
 			<p className="absolute text-sm text-slate-400 left-6 bottom-3">
