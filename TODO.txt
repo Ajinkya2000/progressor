@@ -8,3 +8,4 @@ Things to do in Progressor for MVP:
 6. Delete email token from database after email verification.
 7. Refactor tasks.py in both user and leetcode app
 8. Error handling for management command
+9. Add sentry
