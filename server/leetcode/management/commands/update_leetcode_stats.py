@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
 
+from celery import chain
 from leetcode.tasks import update_leetcode_stats_all_users
 from leetcode.models import LeetcodeUpdatedData
 from leetcode.serializers import LeetcodeUpdatedDataSerializer
@@ -12,8 +13,11 @@ class Command(BaseCommand):
 
         queryset = LeetcodeUpdatedData.objects.all()
         serializer = LeetcodeUpdatedDataSerializer(queryset, many=True)
+        update_tasks = []
+
         for leetcode_obj in serializer.data:
-            update_leetcode_stats_all_users.delay(leetcode_obj)
-            
+            update_tasks.append(update_leetcode_stats_all_users.si(leetcode_obj=leetcode_obj))
+        
+        chain(*update_tasks).apply_async()
 
 

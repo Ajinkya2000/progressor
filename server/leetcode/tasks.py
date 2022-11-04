@@ -22,6 +22,7 @@ def update_leetcode_stats_all_users(leetcode_obj):
   user = leetcode_obj.get('user_id')
   email = user.get('email')
   leetcode_username = leetcode_obj.get('leetcode_username')
+  print("Starting: ", email)
 
   # Scrape leetcode data
   new_leetcode_stats, error = leetcode_scraper.get_leetcode_data(
@@ -51,3 +52,5 @@ def update_leetcode_stats_all_users(leetcode_obj):
     data=updated_data_serializer.data,
     diff=diff
   )
+  print("Ending: ", email)
+  return email
