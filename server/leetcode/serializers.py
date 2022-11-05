@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import LeetcodeInitialData, LeetcodeUpdatedData
+from .models import LeetcodeInitialData, LeetcodeUpdatedData, LeetcodeDailyData
 from users.serializers import UserSerializer
 
 
@@ -36,3 +36,9 @@ class LeetcodeInitialDataSerializer(serializers.ModelSerializer):
   def get_user(self, instance):
     user_serializer = UserSerializer(instance.user_id)
     return user_serializer.data
+
+
+class LeetcodeDailyDataSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = LeetcodeDailyData
+    fields = '__all__'
