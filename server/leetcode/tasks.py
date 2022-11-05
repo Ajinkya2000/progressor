@@ -3,7 +3,7 @@ from scripts import leetcode_scraper
 
 from utils.send_email import send_email, send_email_db_update, get_date
 from .models import LeetcodeUpdatedData
-from .serializers import LeetcodeUpdatedDataSerializer
+from .serializers import LeetcodeUpdatedDataSerializer, LeetcodeDailyDataSerializer
 
 
 @shared_task
@@ -39,11 +39,17 @@ def update_leetcode_stats_all_users(leetcode_obj):
     'hard_questions': new_leetcode_stats['hard_questions'] - leetcode_obj['hard_questions'],
   }
 
-  leetcode_updated_data_instance = LeetcodeUpdatedData.objects.get(user_id=user.get('id'))
+  leetcode_updated_data_instance = LeetcodeUpdatedData.objects.get(
+    user_id=user.get('id'))
   updated_data_serializer = LeetcodeUpdatedDataSerializer(
     instance=leetcode_updated_data_instance, data=new_leetcode_stats, partial=True)
   updated_data_serializer.is_valid(raise_exception=True)
   updated_data_serializer.save()
+
+  daily_data_serializer = LeetcodeDailyDataSerializer(
+    data={'user_id': user.get('id'), 'leetcode_username': leetcode_username, **diff})
+  daily_data_serializer.is_valid(raise_exception=True)
+  daily_data_serializer.save()
 
   # Send Email
   send_email_db_update(
